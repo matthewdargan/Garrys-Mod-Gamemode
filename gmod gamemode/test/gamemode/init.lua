@@ -4,6 +4,7 @@ AddCSLuaFile("testhud.lua")
 AddCSLuaFile("custom_menu.lua")
 
 include( "shared.lua" )
+include("concommands.lua")
 
 -- checks to see if f4 menu is opened or closed
 local open = false
