@@ -23,14 +23,24 @@ end
 function ENT:SpawnFunction(ply, tr, ClassName)
     if (!tr.Hit) then return end
 
-    local SpawnPos = ply:GetShootPos() + ply:GetForward() * 80
+    local entCount = ply:GetNWInt(ClassName .. "count")
 
-    local ent = ents.Create(ClassName)
-    ent:SetPos(SpawnPos)
-    ent:Spawn()
-    ent:Activate()
+    if (entCount < self.Limit) then
+        local SpawnPos = ply:GetShootPos() + ply:GetForward() * 80
 
-    return ent
+        self.Owner = ply
+
+        local ent = ents.Create(ClassName)
+        ent:SetPos(SpawnPos)
+        ent:Spawn()
+        ent:Activate()
+
+        ply:SetNWInt(ClassName .. "count", entCount + 1)
+
+        return ent
+    end
+
+    return
 end
 
 function ENT:Use(activator, caller)
@@ -50,4 +60,12 @@ function ENT:OnTakeDamage(damage)
     if (self:Health() <= 0) then
         self:Remove()
     end
+end
+
+function ENT:OnRemove()
+    local Owner = self.Owner
+    local ClassName = self:GetClass()
+    local entCount = Owner:GetNWInt(ClassName .. "count")
+
+    Owner:SetNWInt(ClassName .. "count", entCount - 1)
 end

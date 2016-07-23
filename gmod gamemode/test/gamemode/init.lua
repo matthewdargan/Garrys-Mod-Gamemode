@@ -120,3 +120,10 @@ for k,v in pairs(player.GetAll()) do
 	v:SetPData("playerMoney",v:GetNWInt("playerMoney"))
 	end
 end
+
+function GM:GravGunPunt(player, entity)
+	-- if (entity:GetClass() == "ammo_dispenser") then
+	--     return false
+	-- end              if we want to punt props but not entities
+	return false
+end
