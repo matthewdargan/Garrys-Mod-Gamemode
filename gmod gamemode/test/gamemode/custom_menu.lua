@@ -51,6 +51,30 @@ function addButtons(Menu)
 
     playerButton.DoClick = function(playerButton)
         local playerPanel = Menu:Add("PlayerPanel")
+
+        playerPanel.Paint = function()
+            surface.SetDrawColor(50, 50, 50, 255)
+            surface.DrawRect(0, 0, playerPanel:GetWide(), playerPanel:GetTall())
+            surface.SetTextColor(255, 255, 255, 255)
+
+            -- Player Name
+            surface.CreateFont("HeaderFont", {font = "Default", size = 30, weight = 5000})
+            surface.SetFont("HeaderFont")
+            surface.SetTextPos(5, 0)
+            surface.DrawText(LocalPlayer():GetName())
+
+            -- Player Exp and Level
+            local expToLevel = (LocalPlayer():GetNWInt("playerLvl") * 100) * 2
+
+            surface.SetFont("Default")
+            surface.SetTextPos(8, 35)
+            surface.DrawText("Level " .. LocalPlayer():GetNWInt("playerLvl"))
+            surface.DrawText("\tExp " .. LocalPlayer():GetNWInt("playerExp") .. "/" .. expToLevel)
+
+            -- Player Money Balance
+            surface.SetTextPos(8, 55)
+            surface.DrawText("Balance: " .. LocalPlayer():GetNWInt("playerMoney"))
+        end
     end
 
     local shopButton = vgui.Create("DButton")
@@ -74,6 +98,25 @@ function addButtons(Menu)
 
     shopButton.DoClick = function(shopButton)
         local shopPanel = Menu:Add("ShopPanel")
+        local iconList = vgui.Create("DIconLayout", shopPanel)
+
+        iconList:SetPos(0, 0)
+        iconList:SetSize(shopPanel:GetWide(), shopPanel:GetTall())
+        iconList:SetSpaceY(5)
+        iconList:SetSpaceX(5)
+
+        local entsArr = {}
+        entsArr[1] = scripted_ents.Get("ammo_dispenser")
+
+        for k, v in pairs(entsArr) do
+            local icon = vgui.Create("SpawnIcon", iconList)
+            icon:SetModel(v["Model"])
+            icon:SetToolTip(v["PrintName"] .. "\nCost: " .. v["Cost"])
+            iconList:Add(icon)
+            icon.DoClick = function(icon)
+                LocalPlayer():ConCommand("buy_entity " .. v["ClassName"])
+            end
+        end
     end
 end
 
