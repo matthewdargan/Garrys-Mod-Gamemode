@@ -31,21 +31,21 @@ end --]]
 
 function GM:PlayerInitialSpawn(ply)
 	if (ply:GetPData("playerLvl") == nil) then
-		ply:SetNWInt("playerLvl",1)
+		ply:SetNWInt("playerLvl", 1)
 	else
-		ply:SetNWInt("playerLvl",ply:GetPData("playerLvl"))
+		ply:SetNWInt("playerLvl", tonumber(ply:GetPData("playerLvl")))
 	end
 
 	if (ply:GetPData("playerExp") == nil) then
-		ply:SetNWInt("playerExp",0)
+		ply:SetNWInt("playerExp", 0)
 	else
-		ply:SetNWInt("playerExp",ply:GetPData("playerExp"))
+		ply:SetNWInt("playerExp", tonumber(ply:GetPData("playerExp")))
 	end
 
-	if(ply:GetPData("playerMoney") == nil) then
-		ply:SetNWInt("playerMoney",0)
+	if (ply:GetPData("playerMoney") == nil) then
+		ply:SetNWInt("playerMoney", 0)
 	else
-		ply:SetNWInt("playerMoney",ply:GetPData("playerMoney"))
+		ply:SetNWInt("playerMoney", tonumber(ply:GetPData("playerMoney")))
 	end
 end
 
@@ -56,7 +56,7 @@ function GM:OnNPCKilled(npc, attacker, inflictor)
 
 	attacker:SetNWInt("playerMoney", attacker:GetNWInt("playerMoney") + 50)
 
-	attacker:SetNWInt("playerExp",attacker:GetNWInt("playerExp")+10)
+	attacker:SetNWInt("playerExp",attacker:GetNWInt("playerExp") + 10)
 
 	checkForLevel(attacker)
 end
@@ -64,7 +64,7 @@ end
 function GM:PlayerDeath(victim, inflictor, attacker)
 	attacker:SetNWInt("playerMoney", attacker:GetNWInt("playerMoney") + 50)
 
-	attacker:SetNWInt("playerExp",attacker:GetNWInt("playerExp")+10)
+	attacker:SetNWInt("playerExp",attacker:GetNWInt("playerExp") + 10)
 
 	checkForLevel(attacker)
 end
