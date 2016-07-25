@@ -80,6 +80,17 @@ function GM:PlayerLoadout(ply)
 	return true
 end
 
+-- Could be an issue depending on the gamemode
+-- Prevents other players from being able to pick up the entity of the owner
+-- Prevents all players from being able to pick up props
+function GM:PhysgunPickup(ply, ent)
+	if (ent.Owner == ply) then
+		return true
+	end
+
+	return false
+end
+
 function checkForLevel(ply)
 	local expToLevel = (ply:GetNWInt("playerLvl")*100)*2
 	local curExp = ply:GetNWInt("playerExp")
