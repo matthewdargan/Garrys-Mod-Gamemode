@@ -47,6 +47,10 @@ function GM:PlayerInitialSpawn(ply)
 	else
 		ply:SetNWInt("playerMoney", tonumber(ply:GetPData("playerMoney")))
 	end
+
+	if (ply:GetPData("playerWeapon") != nil) then
+		ply:SetNWString("playerWeapon", ply:GetPData("playerWeapon"))
+	end
 end
 
 function GM:OnNPCKilled(npc, attacker, inflictor)
@@ -75,6 +79,10 @@ function GM:PlayerLoadout(ply)
 	ply:Give("weapon_physgun")
 	ply:Give("weapon_physcannon")
 
+	if (ply:GetNWString("playerWeapon") != nil) then
+		ply:Give(ply:GetNWString("playerWeapon"))
+	end
+
 	ply:GiveAmmo(9999, "Pistol", true)
 
 	return true
@@ -97,11 +105,12 @@ function checkForLevel(ply)
 	local curLvl = ply:GetNWInt("playerLvl")
 
 	if (curExp >= expToLevel) then
-	curExp = curExp - expToLevel
+		curExp = curExp - expToLevel
 
-	ply:SetNWInt("playerExp", curExp)
-	ply:SetNWInt("playerLvl", curLvl + 1)
+		ply:SetNWInt("playerExp", curExp)
+		ply:SetNWInt("playerLvl", curLvl + 1)
 
+		ply:PrintMessage(HUD_PRINTTALK, "Congratulations! You are now level " .. (curLvl + 1) .. ".")
 	end
 end
 
@@ -110,11 +119,10 @@ function GM:ShowSpare2(ply)
 end
 
 function GM:PlayerDisconnected(ply)
-
 	ply:SetPData("playerLvl",ply:GetNWInt("playerLvl"))
 	ply:SetPData("playerExp",ply:GetNWInt("playerExp"))
 	ply:SetPData("playerMoney",ply:GetNWInt("playerMoney"))
-
+	ply:SetPData("playerWeapon", ply:GetNWString("playerWeapon"))
 end
 
 function GM:ShutDown()
@@ -122,6 +130,7 @@ function GM:ShutDown()
 		v:SetPData("playerLvl",v:GetNWInt("playerLvl"))
 		v:SetPData("playerExp",v:GetNWInt("playerExp"))
 		v:SetPData("playerMoney",v:GetNWInt("playerMoney"))
+		v:SetPData("playerWeapon", v:GetNWString("playerWeapon"))
 	end
 end
 

@@ -11,19 +11,25 @@ function buyEntity(ply, cmd, args)
 
             local entCount = ply:GetNWInt(ClassName .. "count")
 
-            if (entCount < ent.Limit && balance >= ent.Cost) then
-                local SpawnPos = ply:GetShootPos() + ply:GetForward() * 80
+            if (entCount < ent.Limit) then
+                if (balance >= ent.Cost) then
+                    local SpawnPos = ply:GetShootPos() + ply:GetForward() * 80
 
-                ent.Owner = ply
+                    ent.Owner = ply
 
-                ent:SetPos(SpawnPos)
-                ent:Spawn()
-                ent:Activate()
+                    ent:SetPos(SpawnPos)
+                    ent:Spawn()
+                    ent:Activate()
 
-                ply:SetNWInt("playerMoney", balance - ent.Cost)
-                ply:SetNWInt(ClassName .. "count", entCount + 1)
+                    ply:SetNWInt("playerMoney", balance - ent.Cost)
+                    ply:SetNWInt(ClassName .. "count", entCount + 1)
 
-                return ent
+                    return ent
+                else
+                    ply:PrintMessage(HUD_PRINTTALK, "You do not have enough money to purchase this item.")
+                end
+            else
+                ply:PrintMessage(HUD_PRINTTALK, "You already have the maximum amount of this entity type. MAX = " .. ent.Limit)
             end
 
             return
@@ -48,9 +54,14 @@ function buyGun(ply, cmd, args)
             if (playerLvl >= levelReq) then
                 if (balance >= gunCost) then
                     ply:SetNWInt("playerMoney", balance - gunCost)
+                    ply:SetNWString("playerWeapon", args[1])
                     ply:Give(args[1])
                     ply:GiveAmmo(20, ply:GetWeapon(args[1]):GetPrimaryAmmoType(), false)
+                else
+                    ply:PrintMessage(HUD_PRINTTALK, "You do not have enough money to purchase this item.")
                 end
+            else
+                ply:PrintMessage(HUD_PRINTTALK, "You must be level " .. levelReq .. " to purchase this item.")
             end
 
             return
