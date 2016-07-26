@@ -1,6 +1,6 @@
 local Menu
 
-net.Receive("FMenu", function()
+function gameMenu()
     if (Menu == nil) then
         Menu = vgui.Create("DFrame")
         Menu:SetSize(750, 500)
@@ -16,18 +16,20 @@ net.Receive("FMenu", function()
             surface.SetDrawColor(40, 40, 40, 255)
             surface.DrawRect(0, 24, Menu:GetWide(), 1)
         end
-    end
 
-    addButtons(Menu)
-
-    if (net.ReadBit() == 0) then
-        Menu:Hide()
-        gui.EnableScreenClicker(false)
-    else
-        Menu:Show()
+        addButtons(Menu)
         gui.EnableScreenClicker(true)
+    else
+        if (Menu:IsVisible()) then
+            Menu:SetVisible(false)
+            gui.EnableScreenClicker(false)
+        else
+            Menu:SetVisible(true)
+            gui.EnableScreenClicker(true)
+        end
     end
-end)
+end
+concommand.Add("open_game_menu", gameMenu)
 
 function addButtons(Menu)
     local playerButton = vgui.Create("DButton")
@@ -135,12 +137,12 @@ function addButtons(Menu)
         end
 
         local weaponsArr = {}
-        weaponsArr[1] = {"models/weapons/w_shotgun.mdl", "weapon_shotgun", "Shotgun", "200"}
+        weaponsArr[1] = {"models/weapons/w_shotgun.mdl", "weapon_shotgun", "Shotgun", "200", "5"}
 
         for k, v in pairs(weaponsArr) do
             local icon = vgui.Create("SpawnIcon", weaponList)
             icon:SetModel(v[1])
-            icon:SetToolTip(v[3] .. "\nCost: " .. v[4])
+            icon:SetToolTip(v[3] .. "\nCost: " .. v[4] .. "\nLevel Req: " .. v[5])
             weaponList:Add(icon)
             icon.DoClick = function(icon)
                 LocalPlayer():ConCommand("buy_gun " .. v[2])

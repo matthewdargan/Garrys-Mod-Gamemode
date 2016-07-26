@@ -105,18 +105,8 @@ function checkForLevel(ply)
 	end
 end
 
-util.AddNetworkString("FMenu")
-
 function GM:ShowSpare2(ply)
-	if(open == false) then
-		open = true
-	else
-		open = false
-	end
-
-	net.Start("FMenu") -- When F4 key is pressed, it is initialized
-	net.WriteBit(open)
-	net.Broadcast()
+	ply:ConCommand("open_game_menu")
 end
 
 function GM:PlayerDisconnected(ply)

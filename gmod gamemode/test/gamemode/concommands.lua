@@ -34,19 +34,23 @@ concommand.Add("buy_entity", buyEntity)
 
 function buyGun(ply, cmd, args)
     -- Add any new weapons to this array below, for example...
-    -- weaponPrices[2] = {"weapon_name_here", "weapon_cost_here"}
+    -- weaponPrices[2] = {"weapon_name_here", "weapon_cost_here", "weapon_level_requirement"}
     local weaponPrices = {}
-    weaponPrices[1] = {"weapon_shotgun", "200"}
+    weaponPrices[1] = {"weapon_shotgun", "200", "5"}
 
     for k, v in pairs(weaponPrices) do
         if (args[1] == v[1]) then
             local balance = ply:GetNWInt("playerMoney")
+            local playerLvl = ply:GetNWInt("playerLvl")
             local gunCost = tonumber(v[2])
+            local levelReq = tonumber(v[3])
 
-            if (balance >= gunCost) then
-                ply:SetNWInt("playerMoney", balance - gunCost)
-                ply:Give(args[1])
-                ply:GiveAmmo(20, ply:GetWeapon(args[1]):GetPrimaryAmmoType(), false)
+            if (playerLvl >= levelReq) then
+                if (balance >= gunCost) then
+                    ply:SetNWInt("playerMoney", balance - gunCost)
+                    ply:Give(args[1])
+                    ply:GiveAmmo(20, ply:GetWeapon(args[1]):GetPrimaryAmmoType(), false)
+                end
             end
 
             return
