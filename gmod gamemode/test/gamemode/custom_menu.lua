@@ -143,7 +143,7 @@ function addButtons(Menu)
             icon:SetToolTip(v[3] .. "\nCost: " .. v[4])
             weaponList:Add(icon)
             icon.DoClick = function(icon)
-                LocalPlayer():ConCommand("buy_gun " .. v[2] .. " " .. v[4])
+                LocalPlayer():ConCommand("buy_gun " .. v[2])
             end
         end
     end

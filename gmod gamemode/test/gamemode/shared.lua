@@ -1,5 +1,5 @@
 GM.Name = "Test Gamemode"
-GM.Author = "brando"
+GM.Author = "Matthew and Brandon"
 GM.Email = "wowbob396@gmail.com"
 GM.Website = "N/A"
 DeriveGamemode("sandbox")

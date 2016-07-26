@@ -33,14 +33,23 @@ end
 concommand.Add("buy_entity", buyEntity)
 
 function buyGun(ply, cmd, args)
-    if (args[1] != nil && args[2] != nil) then
-        local balance = ply:GetNWInt("playerMoney")
-        local gunCost = tonumber(args[2])
+    -- Add any new weapons to this array below, for example...
+    -- weaponPrices[2] = {"weapon_name_here", "weapon_cost_here"}
+    local weaponPrices = {}
+    weaponPrices[1] = {"weapon_shotgun", "200"}
 
-        if (balance >= gunCost) then
-            ply:SetNWInt("playerMoney", balance - gunCost)
-            ply:Give(args[1])
-            ply:GiveAmmo(20, ply:GetWeapon(args[1]):GetPrimaryAmmoType(), false)
+    for k, v in pairs(weaponPrices) do
+        if (args[1] == v[1]) then
+            local balance = ply:GetNWInt("playerMoney")
+            local gunCost = tonumber(v[2])
+
+            if (balance >= gunCost) then
+                ply:SetNWInt("playerMoney", balance - gunCost)
+                ply:Give(args[1])
+                ply:GiveAmmo(20, ply:GetWeapon(args[1]):GetPrimaryAmmoType(), false)
+            end
+
+            return
         end
     end
 end
