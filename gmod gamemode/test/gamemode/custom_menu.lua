@@ -123,8 +123,10 @@ function addButtons(Menu)
         weaponList:SetSpaceY(5)
         weaponList:SetSpaceX(5)
 
+        -- Add new entities here to display in F4 Menu
         local entsArr = {}
         entsArr[1] = scripted_ents.Get("ammo_dispenser")
+        entsArr[2] = scripted_ents.Get("barricade")
 
         for k, v in pairs(entsArr) do
             local icon = vgui.Create("SpawnIcon", entityList)
@@ -136,6 +138,7 @@ function addButtons(Menu)
             end
         end
 
+        -- Add new weapons here to display in F4 Menu
         local weaponsArr = {}
         weaponsArr[1] = {"models/weapons/w_shotgun.mdl", "weapon_shotgun", "Shotgun", "200", "5"}
 

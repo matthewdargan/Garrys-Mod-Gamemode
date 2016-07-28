@@ -9,6 +9,8 @@ function ENT:Initialize()
     self:SetMoveType(MOVETYPE_VPHYSICS)
     self:SetSolid(SOLID_VPHYSICS)
 
+    self:SetUseType(SIMPLE_USE)
+
     local phys = self:GetPhysicsObject()
 
     if (IsValid(phys)) then
@@ -33,6 +35,17 @@ function ENT:SpawnFunction(ply, tr, ClassName)
     return ent
 end
 
+util.AddNetworkString("OpenBarricadeMenu")
+function ENT:Use(activator, caller)
+    if (caller == self.Owner) then
+        net.Start("OpenBarricadeMenu")
+            net.WriteEntity(self)
+            net.WriteEntity(caller)
+            net.WriteInt(self:Health(), 11) -- Last argument(11) is the number of bits required, use 32 if you don't know
+        net.Send(caller)
+    end
+end
+
 function ENT:Think()
 
 end
@@ -44,3 +57,18 @@ function ENT:OnTakeDamage(damage)
         self:Remove()
     end
 end
+
+util.AddNetworkString("UpgradeEntityHealth")
+net.Receive("UpgradeEntityHealth", function()
+    local ent = net.ReadEntity()
+    local upgradePrice = net.ReadInt(11)
+
+    local player = ent.Owner
+    local playerBalance = player:GetNWInt("playerMoney")
+
+    ent.BaseHealth = net.ReadInt(11)
+    ent.CurHealthLevel = ent.CurHealthLevel + 1
+    ent:SetHealth(ent.BaseHealth)
+
+    player:SetNWInt("playerMoney", playerBalance - upgradePrice)
+end)
