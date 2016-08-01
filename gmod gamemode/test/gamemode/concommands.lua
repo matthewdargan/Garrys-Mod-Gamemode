@@ -13,7 +13,7 @@ function buyEntity(ply, cmd, args)
 
             -- !IsValid(ent.Limit) might be causing error with spawning ammo_dispenser
             -- Fix this error and then commit to github
-            if (!IsValid(ent.Limit) or entCount < ent.Limit) then
+            if (ent.Limit == nil or entCount < ent.Limit) then
                 if (balance >= ent.Cost) then
                     local SpawnPos = ply:GetShootPos() + ply:GetForward() * 80
 

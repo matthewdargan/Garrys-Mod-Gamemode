@@ -9,8 +9,8 @@ function ENT:Draw()
     Ang:RotateAroundAxis(Ang:Up(), 90)
 
     local EntityName = "Basic Printer"
-    local PrinterOwner = "PRINTER OWNER"
-    local MoneyAmount = "MONEY AMOUNT"
+    local PrinterOwner = self:GetBuyer()
+    local MoneyAmount = self:GetStorage()
 
     surface.SetFont("HudHintTextLarge")
     local EntityNameWidth = surface.GetTextSize(EntityName)

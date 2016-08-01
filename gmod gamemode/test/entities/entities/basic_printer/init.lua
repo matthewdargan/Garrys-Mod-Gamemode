@@ -18,16 +18,41 @@ function ENT:Initialize()
     end
 
     self:SetHealth(self.BaseHealth)
+
+    -- Setup print timer
+    timer.Create("PrintTimer" .. self:EntIndex(), self.PrintRate, 0, function()
+        self:SetStorage(self:GetStorage() + self.PrintAmount)
+    end)
+end
+
+function ENT:SpawnFunction(ply, tr, ClassName)
+    if (!tr.Hit) then return end
+
+    local SpawnPos = ply:GetShootPos() + ply:GetForward() * 80
+
+    local ent = ents.Create(ClassName)
+
+    ent:SetBuyer(ply:GetName())
+    ent:SetStorage(0)
+
+    ent:SetPos(SpawnPos)
+    ent:Spawn()
+    ent:Activate()
+
+    return ent
 end
 
 function ENT:Use(activator, caller)
-    activator:SetNWInt("playerMoney", activator:GetNWInt("playerMoney") + 10) -- + 10 is temporary
+    activator:SetNWInt("playerMoney", activator:GetNWInt("playerMoney") + self:GetStorage())
+
+    self:SetStorage(0)
 end
 
 function ENT:OnTakeDamage(damage)
     self:SetHealth(self:Health() - damage:GetDamage())
 
     if (self:Health() <= 0) then
+        timer.Remove("PrintTimer" .. self:EntIndex())
         self:Remove()
     end
 end
