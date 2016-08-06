@@ -127,6 +127,7 @@ function addButtons(Menu)
         local entsArr = {}
         entsArr[1] = scripted_ents.Get("ammo_dispenser")
         entsArr[2] = scripted_ents.Get("barricade")
+        entsArr[3] = scripted_ents.Get("basic_printer")
 
         for k, v in pairs(entsArr) do
             local icon = vgui.Create("SpawnIcon", entityList)

@@ -15,6 +15,7 @@ ENT.Spawnable = true
 ENT.AdminSpawnable = false
 
 ENT.BaseHealth = 20
+ENT.Cost = 250
 ENT.PrintRate = 1 -- In seconds
 ENT.PrintAmount = 20
 
