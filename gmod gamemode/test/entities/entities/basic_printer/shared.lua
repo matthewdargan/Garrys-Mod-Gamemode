@@ -1,6 +1,7 @@
 function ENT:SetupDataTables()
     self:NetworkVar("String", 0, "Buyer")
     self:NetworkVar("Int", 0, "Storage")
+    self:NetworkVar("Int", 1, "PrintAmount")
 end
 
 ENT.Type = "anim"
@@ -17,6 +18,5 @@ ENT.AdminSpawnable = false
 ENT.BaseHealth = 20
 ENT.Cost = 250
 ENT.PrintRate = 1 -- In seconds
-ENT.PrintAmount = 20
 
 ENT.Model = "models/props_lab/reciever01a.mdl"

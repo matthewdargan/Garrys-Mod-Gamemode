@@ -71,3 +71,8 @@ function buyGun(ply, cmd, args)
     end
 end
 concommand.Add("buy_gun", buyGun)
+
+function upgradePrintAmount(ply, cmd, args)
+    Entity(args[1]):SetPrintAmount(100)
+end
+concommand.Add("upgrade_print_amount", upgradePrintAmount)

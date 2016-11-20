@@ -21,7 +21,7 @@ function ENT:Initialize()
 
     -- Setup print timer
     timer.Create("PrintTimer" .. self:EntIndex(), self.PrintRate, 0, function()
-        self:SetStorage(self:GetStorage() + self.PrintAmount)
+        self:SetStorage(self:GetStorage() + self:GetPrintAmount())
     end)
 end
 
@@ -34,6 +34,7 @@ function ENT:SpawnFunction(ply, tr, ClassName)
 
     ent:SetBuyer(ply:GetName())
     ent:SetStorage(0)
+    ent:SetPrintAmount(20)
 
     ent:SetPos(SpawnPos)
     ent:Spawn()
