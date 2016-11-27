@@ -73,6 +73,15 @@ end
 concommand.Add("buy_gun", buyGun)
 
 function upgradePrintAmount(ply, cmd, args)
-    Entity(args[1]):SetPrintAmount(100)
+    local entity = Entity(args[1])
+    local printAmount = entity:GetPrintAmount()
+    local upgradeCost = printAmount * 2
+    local plyBal = ply:GetNWInt("playerMoney")
+
+    if (plyBal >= upgradeCost) then
+        ply:SetNWInt("playerMoney", plyBal - upgradeCost)
+
+        entity:SetPrintAmount(printAmount + 20)
+    end
 end
 concommand.Add("upgrade_print_amount", upgradePrintAmount)
