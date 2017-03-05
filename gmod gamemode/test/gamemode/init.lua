@@ -143,3 +143,22 @@ function GM:GravGunPunt(player, entity)
 	-- end              if we want to punt props but not entities
 	return false
 end
+
+function GM:PlayerSay(ply, text)
+	local playerMsg = string.Explode(" ", text)
+
+	if (playerMsg[1] == "/dropmoney") then
+		if (tonumber(playerMsg[2])) then
+			local amount = tonumber(playerMsg[2])
+			local plyBalance = ply:GetNWInt("playerMoney")
+
+			if (amount > 0 and amount <= plyBalance) then
+				ply:SetNWInt("playerMoney", plyBalance - amount)
+
+				scripted_ents.Get("money"):SpawnFunction(ply, ply:GetEyeTrace(), "money"):SetValue(amount)
+			end
+
+			return ""
+		end
+	end
+end
