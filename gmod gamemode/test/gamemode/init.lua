@@ -3,9 +3,11 @@ AddCSLuaFile( "shared.lua" )
 AddCSLuaFile("testhud.lua")
 AddCSLuaFile("custom_menu.lua")
 AddCSLuaFile("custom_scoreboard.lua")
+AddCSLuaFile("config/custom_classes.lua")
 
 include( "shared.lua" )
 include("concommands.lua")
+include("config/custom_classes.lua")
 
 -- checks to see if f4 menu is opened or closed
 local open = false
@@ -31,6 +33,8 @@ local open = false
 end --]]
 
 function GM:PlayerInitialSpawn(ply)
+	ply:SetNWInt("playerClass", 1)
+
 	if (ply:GetPData("playerLvl") == nil) then
 		ply:SetNWInt("playerLvl", 1)
 	else
@@ -78,17 +82,19 @@ end
 
 -- Default Player Loadout
 function GM:PlayerLoadout(ply)
-	ply:Give("weapon_pistol")
-	ply:Give("weapon_physgun")
-	ply:Give("weapon_physcannon")
+	local plyClass = PLAYER_CLASSES[ply:GetNWInt("playerClass")]
 
-	if (ply:GetNWString("playerWeapon") != nil) then
-		ply:Give(ply:GetNWString("playerWeapon"))
+	for k, v in pairs(plyClass.weapons) do
+		ply:Give(v)
 	end
 
-	ply:GiveAmmo(9999, "Pistol", true)
-
 	return true
+end
+
+function GM:PlayerSetModel(ply)
+	local plyClass = PLAYER_CLASSES[ply:GetNWInt("playerClass")]
+
+	ply:SetModel(plyClass.model)
 end
 
 -- Could be an issue depending on the gamemode
