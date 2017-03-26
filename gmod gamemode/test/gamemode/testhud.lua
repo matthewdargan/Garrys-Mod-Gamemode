@@ -4,15 +4,17 @@ local client = LocalPlayer()
 
 	if !client:Alive() then
 		return
+	end
 
-end
+	local healthWidth = (client:Health() / client:GetMaxHealth()) * 100
+
 	-- hud box for health and armor
 	draw.RoundedBox(0,0, ScrH() - 100, 250, 100, Color(30,30,30,150))
 
 	-- health bar
 	draw.RoundedBox(0,10,ScrH()-70,225,15,Color(0,255,0,100))
-	draw.RoundedBox(0, 10, ScrH()-70, math.Clamp(client:Health(),0,100)*2.27, 15, Color(0,255,0,255))
-	draw.RoundedBox(0, 10, ScrH()-70, math.Clamp(client:Health(),0,100)*2.27, 13, Color(255,0,0,255))
+	draw.RoundedBox(0, 10, ScrH()-70, math.Clamp(healthWidth,0,100)*2.27, 15, Color(0,255,0,255))
+	draw.RoundedBox(0, 10, ScrH()-70, math.Clamp(healthWidth,0,100)*2.27, 13, Color(255,0,0,255))
 
 	-- armor bar
 	draw.RoundedBox(0,10,ScrH()-30,225,15,Color(0,0,255,100))

@@ -12,25 +12,19 @@ include("config/custom_classes.lua")
 -- checks to see if f4 menu is opened or closed
 local open = false
 
---[[ function GM:PlayerSpawn(ply)
+function GM:PlayerSpawn(ply)
+	local plyClass = PLAYER_CLASSES[ply:GetNWInt("playerClass")]
 
-	ply:SetGravity(.80)
-	ply:SetMaxHealth(100)
-	ply:SetWalkSpeed(200)
-	ply:SetRunSpeed(400)
-	ply:SetArmor(50)
+	ply:SetMaxHealth(plyClass.health)
+	ply:SetHealth(plyClass.health)
+	ply:SetWalkSpeed(plyClass.walkspeed)
+	ply:SetRunSpeed(plyClass.runspeed)
 
-	ply:Give("weapon_physcannon")
-	ply:Give("weapon_physgun")
-	ply:Give("weapon_pistol")
-	ply:Give("weapon_smg1")
-	ply:Give("weapon_ar2")
+	ply:StripWeapons()
 
-	ply:SetAmmo(200,"weapon_ar2")
-	ply:SetAmmo(2,"AR2AltFire")
-
-	ply:SetupHands()
-end --]]
+	hook.Call("PlayerLoadout", GAMEMODE, ply)
+	hook.Call("PlayerSetModel", GAMEMODE, ply)
+end
 
 function GM:PlayerInitialSpawn(ply)
 	ply:SetNWInt("playerClass", 1)
@@ -95,6 +89,7 @@ function GM:PlayerSetModel(ply)
 	local plyClass = PLAYER_CLASSES[ply:GetNWInt("playerClass")]
 
 	ply:SetModel(plyClass.model)
+	ply:SetupHands()
 end
 
 -- Could be an issue depending on the gamemode
